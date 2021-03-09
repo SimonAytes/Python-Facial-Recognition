@@ -21,8 +21,8 @@ FRAME_THICKNESS = 3
 FONT_THICKNESS = 2
 
 # Model used for the facial recognition
-MODEL = "cnn"
-# Alternative, "hog"
+MODEL = "hog"
+# Alternative, "cnn"
 
 # Load in known faces
 print("Loading known faces")
@@ -35,13 +35,12 @@ for name in os.listdir(KNOWN_FACES_DIR):
     #Check if the folder is an Apple folder (they start with a '.')
     if name[0] == '.':
         continue
-    print("DIR")
+    print(f"Loading {name}")
     #Iterate over all images in the directory
     for filename in os.listdir(f"{KNOWN_FACES_DIR}/{name}"):
         #Check if the file is an Apple file (they start with a '.')
         if filename[0] == '.':
             continue
-        print("IMG")
         #Load the image with the Facial_Recognition library
         image = face_recognition.load_image_file(f"{KNOWN_FACES_DIR}/{name}/{filename}")
         #Create the encoding (at the first face it finds)
