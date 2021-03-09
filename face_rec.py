@@ -63,10 +63,11 @@ for name in os.listdir(KNOWN_FACES_DIR):
 print("Processing Unknown Faces")
 #Iterate through each of the unkown faces
 for filename in os.listdir(UNKNOWN_FACES_DIR):
+    faces_in_image = []
     #Check if the file is an Apple file (they start with a '.')
     if filename[0] == '.':
         continue
-    print(filename)
+    print(f"Processing {filename}")
     image = face_recognition.load_image_file(f"{UNKNOWN_FACES_DIR}/{filename}")
     #Find all the faces in the image
     locations = face_recognition.face_locations(image, model=MODEL)
@@ -78,13 +79,13 @@ for filename in os.listdir(UNKNOWN_FACES_DIR):
         results = face_recognition.compare_faces(known_faces, face_encoding, TOLERANCE)
         match = None
         if True in results:
+            #Identify which image is in a match
             match = known_names[results.index(True)]
-            print(f"Match found: {match}")
             #Get the coordinates for the box
             top_left = (face_location[3], face_location[0])
             bottom_right = (face_location[1], face_location[2])
             #Set the color of the box
-            color = [0, 255, 0]
+            color = [255, 0, 0]
             #Draw the rectangle
             cv2.rectangle(image, top_left, bottom_right, color, FRAME_THICKNESS)
             #Get label box location
@@ -93,7 +94,12 @@ for filename in os.listdir(UNKNOWN_FACES_DIR):
             #Draw the label rectangle
             cv2.rectangle(image, top_left, bottom_right, color, cv2.FILLED)
             #Place the text over the image
-            cv2.putText(image, match, (face_location[3]+10, face_location[2]+15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200, 200, 200), FONT_THICKNESS)
+            cv2.putText(image, match, (face_location[3]+10, face_location[2]+15), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 255, 255), FONT_THICKNESS)
+        #Add the identified name to the list of faces in the image
+        faces_in_image.append(match)
+    #Print the names found in the image
+    print(f"Face(s) in Image: {faces_in_image}")
+
     #Show the image
     cv2.imshow(filename, image)
     #Wait until '0' is pressed and then, ...
