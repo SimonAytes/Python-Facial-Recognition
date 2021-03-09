@@ -18,7 +18,6 @@ def load_known_faces():
         data = pickle.loads(open(f"{uc.FACE_ENCODINGS_DIR}/{name}", "rb").read())
         uc.known_faces.append(data)
         uc.known_names.append(name[0:-7])
-        print(f"Imported {name[0:-7]}!")
 
 def import_new_faces():
     print(f"Importing new faces from /{uc.KNOWN_FACES_DIR}")
@@ -82,18 +81,21 @@ def process_unkown_images():
             if True in results:
                 #Identify which image is in a match
                 match = uc.known_names[results.index(True)]
-                #Get the coordinates for the box
-                top_left = (face_location[3], face_location[0])
-                bottom_right = (face_location[1], face_location[2])
-                #Draw the rectangle
-                cv2.rectangle(image, top_left, bottom_right, uc.FRAME_COLOR, uc.FRAME_THICKNESS)
-                #Get label box location
-                top_left = (face_location[3], face_location[2])
-                bottom_right = (face_location[1], face_location[2]+22)
-                #Draw the label rectangle
-                cv2.rectangle(image, top_left, bottom_right, uc.FRAME_COLOR, cv2.FILLED)
-                #Place the text over the image
-                cv2.putText(image, match, (face_location[3]+10, face_location[2]+15), cv2.FONT_HERSHEY_COMPLEX, 0.5, uc.FONT_COLOR, uc.FONT_THICKNESS)
+            else:
+                #Identify that a face was found, but it is Unknown
+                match = "Unknown"
+            #Get the coordinates for the box
+            top_left = (face_location[3], face_location[0])
+            bottom_right = (face_location[1], face_location[2])
+            #Draw the rectangle
+            cv2.rectangle(image, top_left, bottom_right, uc.FRAME_COLOR, uc.FRAME_THICKNESS)
+            #Get label box location
+            top_left = (face_location[3], face_location[2])
+            bottom_right = (face_location[1], face_location[2]+22)
+            #Draw the label rectangle
+            cv2.rectangle(image, top_left, bottom_right, uc.FRAME_COLOR, cv2.FILLED)
+            #Place the text over the image
+            cv2.putText(image, match, (face_location[3]+10, face_location[2]+15), cv2.FONT_HERSHEY_COMPLEX, 0.5, uc.FONT_COLOR, uc.FONT_THICKNESS)    
             #Add the identified name to the list of faces in the image
             faces_in_image.append(match)
         #Print the names found in the image
@@ -106,5 +108,51 @@ def process_unkown_images():
         #... destroy the window
         cv2.destroyWindow(filename)
 
-def save_and_quit():
-    print("Saving...")
+def list_facial_profiles():
+    # Load in known faces
+    print("Saved Profiles:\n")
+    out_string = ""
+    for name in os.listdir(uc.FACE_ENCODINGS_DIR):
+        #Check if the folder is an Apple folder (they start with a '.')
+        if name[0] == '.' or name == "SourceImages":
+            continue
+        #Add the name to the output string
+        out_string = out_string + "\t>> " + name[0:-7] + "\n"
+    #Print the list of names
+    print(out_string)
+
+def remove_facial_profile():
+    # Load in known faces
+    print("Current Profiles:\n")
+    out_string = ""
+    index = 1
+    for name in os.listdir(uc.FACE_ENCODINGS_DIR):
+        #Check if the folder is an Apple folder (they start with a '.')
+        if name[0] == '.' or name == "SourceImages":
+            continue
+        #Add the name to the output string
+        out_string = out_string + f"\t<{index}> " + name[0:-7] + "\n"
+        index = index + 1
+    #Print the list of names
+    print(out_string)
+
+    #Get the index to delete
+    index_to_delete = int(input(f"Profile to delete (1 to {index-1}): "))
+    #Confirm deletion
+    y_n_input = input(f"\nNOTE: This will delete all source images as well as the facial profile.\nAre you sure you would like to delete the profile for {uc.known_names[index_to_delete-1]}? (y/n): ")
+    
+    #Check to see if the user wants to cancel the deletion
+    if y_n_input == "y":
+        print("\nDeleting profile...")
+        #Delete the pickle file
+        os.remove(f"{uc.FACE_ENCODINGS_DIR}/{uc.known_names[index_to_delete-1]}.pickle")
+        #Delete the SourceImage folder
+        shutil.rmtree(f"{uc.FACE_ENCODINGS_DIR}/{uc.SOURCE_IMAGE_DIR}/{uc.known_names[index_to_delete-1]}")
+        #Remove selection from 'known_*' lists
+        del uc.known_names[index_to_delete-1]
+        del uc.known_faces[index_to_delete-1]
+        print("Profile deleted!")
+    else:
+        print("Aborting...")
+        return
+
