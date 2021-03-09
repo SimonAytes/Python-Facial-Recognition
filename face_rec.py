@@ -2,7 +2,7 @@
 import face_recognition #Face detection
 import cv2 #Image processing
 import os #File I/O and management
-import FaceRecConfig as uc #User settings
+import face_rec_config as uc #User settings
 import pickle #Saving encodings
 import shutil #Moving folders
 
