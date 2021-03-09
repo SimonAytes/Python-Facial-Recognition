@@ -9,7 +9,7 @@ KNOWN_FACES_DIR = "known_faces"
 UNKNOWN_FACES_DIR = "unknown_faces"
 
 # Tolerance for facial match
-TOLERANCE = 0.6
+TOLERANCE = 0.5
 # For a small sample set:
 # The higher you go, more false positives
 # The lower you go, the more false negatives
@@ -32,6 +32,8 @@ known_names = [] # Names associated with faces
 
 #Iterate through all known face folders
 for name in os.listdir(KNOWN_FACES_DIR):
+    #Get the number of usable images in the folder
+    numUsableImanges = 0
     #Check if the folder is an Apple folder (they start with a '.')
     if name[0] == '.':
         continue
@@ -43,12 +45,20 @@ for name in os.listdir(KNOWN_FACES_DIR):
             continue
         #Load the image with the Facial_Recognition library
         image = face_recognition.load_image_file(f"{KNOWN_FACES_DIR}/{name}/{filename}")
-        #Create the encoding (at the first face it finds)
-        encoding = face_recognition.face_encodings(image)[0]
-        #Add the encoding to the known_faces list
-        known_faces.append(encoding)
-        #Add the name to the names list
-        known_names.append(name)
+        #Check that there were faces detected in the image
+        if len(face_recognition.face_encodings(image)) > 0:
+            #Create the encoding (at the first face it finds)
+            encoding = face_recognition.face_encodings(image)[0]
+            #Add the encoding to the known_faces list
+            known_faces.append(encoding)
+            #Add the name to the names list
+            known_names.append(name)
+            numUsableImanges = numUsableImanges + 1
+        #If there are none, print a debug message
+        else:
+            print(f"No faces detected in {KNOWN_FACES_DIR}/{name}/{filename}")
+    #Print the number of usable images for the specified person
+    print(f"Usable Images for {name}: {numUsableImanges}")
 
 print("Processing Unknown Faces")
 #Iterate through each of the unkown faces
