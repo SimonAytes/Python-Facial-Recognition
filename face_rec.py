@@ -1,3 +1,11 @@
+"""face_rec.py: Function definition file for the appliation. All function calls are directed here."""
+
+__author__ = "Simon Aytes"
+__version__ = "1.0.0"
+__maintainer__ = "Simon Aytes"
+__email__ = "saytes@umich.edu"
+__status__ = "Release"
+
 #Import necessary libraries
 import face_recognition #Face detection
 import cv2 #Image processing

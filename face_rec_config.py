@@ -1,3 +1,11 @@
+"""face_rec_config.py: Configuration file. All 'global' variables are captured here."""
+
+__author__ = "Simon Aytes"
+__version__ = "1.0.0"
+__maintainer__ = "Simon Aytes"
+__email__ = "saytes@umich.edu"
+__status__ = "Release"
+
 ### DIRECTORY INFO ###
 KNOWN_FACES_DIR = "known_faces" # Training face images
 UNKNOWN_FACES_DIR = "unknown_faces" # Unknown face images
