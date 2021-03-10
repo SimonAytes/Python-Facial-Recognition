@@ -1,3 +1,11 @@
+"""face_rec_driver.py: Command-line driver for the program. Manages all inputs/outputs."""
+
+__author__ = "Simon Aytes"
+__version__ = "1.0.0"
+__maintainer__ = "Simon Aytes"
+__email__ = "saytes@umich.edu"
+__status__ = "Release"
+
 import face_rec as fr
 import face_rec_config as uc
 
