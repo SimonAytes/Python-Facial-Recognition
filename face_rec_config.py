@@ -3,7 +3,7 @@
 __author__ = "Simon Aytes"
 __version__ = "1.0.0"
 __maintainer__ = "Simon Aytes"
-__email__ = "saytes@umich.edu"
+__email__ = "simon.aytes@lc.cuny.edu"
 __status__ = "Release"
 
 ### DIRECTORY INFO ###
