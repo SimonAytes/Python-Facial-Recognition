@@ -8,8 +8,6 @@ _The following versions reflect the environment wherein this program was created
 
 **Python Version:** Python 3.8.5
 
-**OSX Version:** macOS Big Sur 11.2.2
-
 **Face-Recognition Version:** 1.3.0
 
 **OpenCV-Python Version:** 4.5.1.48
@@ -44,14 +42,6 @@ _The following versions reflect the environment wherein this program was created
 
 _NOTE: If the program does not detect any faces in an image, it is most likely because the training data did not have enough pictures. To fix this, remove the facial profile (option three), add more pictures to their directory. Finally, re-create their profile following the steps above and try again._
 
-## Self Check (Before you clone)
+## Self Check
 
-Before pulling down this repository and making any changes, ensure that you have followed [these instructions](https://gist.github.com/jk195417/76afbb7ac8ce30afb04bcd72eafc5aff).
-
-After you have completed the above directions, make sure you have successfully installed the following:
-- brew
-- cmake
-- python3
-- boost-python
-- dlib
-- face_recognition
+Please ensure that you install the packages outlined in the `requirements.txt` file.
